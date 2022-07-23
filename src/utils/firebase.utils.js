@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp } from 'firebase/app';
 import {
   getAuth,
   signInWithRedirect,
@@ -6,16 +6,18 @@ import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-} from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+  signOut,
+  onAuthStateChanged,
+} from 'firebase/auth';
+import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDmmAqeOVyiWYar3_dwL4K-vTpTMtK5tkI",
-  authDomain: "crwn-shopping-page-12fe7.firebaseapp.com",
-  projectId: "crwn-shopping-page-12fe7",
-  storageBucket: "crwn-shopping-page-12fe7.appspot.com",
-  messagingSenderId: "155944139743",
-  appId: "1:155944139743:web:b50beca065c47927b3a26a",
+  apiKey: 'AIzaSyDmmAqeOVyiWYar3_dwL4K-vTpTMtK5tkI',
+  authDomain: 'crwn-shopping-page-12fe7.firebaseapp.com',
+  projectId: 'crwn-shopping-page-12fe7',
+  storageBucket: 'crwn-shopping-page-12fe7.appspot.com',
+  messagingSenderId: '155944139743',
+  appId: '1:155944139743:web:b50beca065c47927b3a26a',
 };
 
 // Initialize Firebase
@@ -24,12 +26,14 @@ const firebaseApp = initializeApp(firebaseConfig);
 
 const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({
-  prompt: "select_account",
+  prompt: 'select_account',
 });
 
 export const auth = getAuth();
+
 export const signInWithGooglePopup = () =>
   signInWithPopup(auth, googleProvider);
+
 export const signInWithGoogleRedirect = () =>
   signInWithRedirect(auth, googleProvider);
 
@@ -41,7 +45,7 @@ export const createUserDocumentFromAuth = async (
 ) => {
   if (!userAuth) return;
 
-  const userDocRef = doc(db, "user", userAuth.uid);
+  const userDocRef = doc(db, 'user', userAuth.uid);
 
   const userSnapshot = await getDoc(userDocRef);
 
@@ -58,7 +62,7 @@ export const createUserDocumentFromAuth = async (
         ...additionalInfo,
       });
     } catch (e) {
-      console.log("error creating the user", e.message);
+      console.log('error creating the user', e.message);
     }
   }
   return userDocRef;
@@ -72,4 +76,9 @@ export const createAuthUserWithEmailAndPassword = async (email, password) => {
 export const signInAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
   return await signInWithEmailAndPassword(auth, email, password);
-}
+};
+
+export const signOutUser = async () => await signOut(auth);
+
+export const onAuthStateChangedListener = (callback) =>
+  onAuthStateChanged(auth, callback);

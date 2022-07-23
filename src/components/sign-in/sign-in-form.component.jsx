@@ -5,7 +5,6 @@ import './sign-in-form.style.scss';
 
 import {
   signInWithGooglePopup,
-  createUserDocumentFromAuth,
   signInAuthUserWithEmailAndPassword,
 } from '../../utils/firebase.utils';
 
@@ -19,8 +18,7 @@ const SignInForm = () => {
   const { email, password } = formField;
 
   const logGoogleUser = async () => {
-    const { user } = await signInWithGooglePopup();
-    await createUserDocumentFromAuth(user);
+    await signInWithGooglePopup();
   };
 
   const resetFormField = () => {
@@ -31,11 +29,10 @@ const SignInForm = () => {
     e.preventDefault();
 
     try {
-      const response = await signInAuthUserWithEmailAndPassword(
+      await signInAuthUserWithEmailAndPassword(
         email,
         password
       );
-      console.log(response);
       resetFormField();
     } catch (e) {
       alert(e.code);
