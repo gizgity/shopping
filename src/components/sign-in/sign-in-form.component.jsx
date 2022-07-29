@@ -9,8 +9,8 @@ import {
 } from '../../utils/firebase.utils';
 
 const defaultFormField = {
-  email: '',
-  password: '',
+  email: 'asdf@sdfg.dfg',
+  password: 'qwerty',
 };
 
 const SignInForm = () => {
